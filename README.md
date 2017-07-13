@@ -20,21 +20,21 @@ $ cfssl gencert \
 
 Convert CA to pkcs12:
 ```
-$ openssl pkcs12 -export -inkey certs/ca-key.pem -in certs/ca.pem -out  certs/ca.pkcs12 -password "pass:changeit"
+$ openssl pkcs12 -export -inkey certs/ca-key.pem -in certs/ca.pem -out certs/ca.pkcs12 -password pass:changeit
 ```
 
 Convert Node to pkcs12:
 ```
-$ openssl pkcs12 -export -inkey certs/node-key.pem -in certs/node.pem -out  certs/node.pkcs12 -password "pass:changeit"
+$ openssl pkcs12 -export -inkey certs/node-key.pem -in certs/node.pem -out certs/node.pkcs12 -password pass:changeit
 ```
 
 Create JKS:
 ```
 $ keytool -importkeystore -srckeystore certs/ca.pkcs12 -srcalias '1' -destkeystore certs/truststore.jks \
-   -storepass "changit" -srcstoretype pkcs12 \
+   -storepass "changeit" -srcstoretype pkcs12 \
    -srcstorepass "changeit" -destalias elasticsearch-ca
 
 $ keytool -importkeystore -srckeystore certs/node.pkcs12 -srcalias '1' -destkeystore certs/node-keystore.jks \
-   -storepass "changit" -srcstoretype pkcs12 \
+   -storepass "changeit" -srcstoretype pkcs12 \
    -srcstorepass "changeit" -destalias elasticsearch-node
 ```
