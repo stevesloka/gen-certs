@@ -1,0 +1,19 @@
+{
+    "hosts": [
+        "example.com",
+        "www.example.com"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "US",
+            "L": "Pittsburgh",
+            "O": "elasticsearch-operator",
+            "OU": "k8s",
+            "ST": "Pennsylvania"
+        }
+    ]
+}
