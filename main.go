@@ -7,6 +7,37 @@ import (
 	"github.com/Sirupsen/logrus"
 )
 
+type csr struct {
+	CN    string   `json:"CN,omitempty"`
+	Hosts []string `json:"hosts"`
+	Key   key      `json:"key"`
+	Names []names  `json:"names"`
+}
+
+type caconfig struct {
+	Sigining configSigning `json:"signing"`
+}
+
+type configSigning struct {
+	Default configDefault `json:"default"`
+}
+
+type configDefault struct {
+	Usages []string `json:"usages"`
+	Expiry string   `json:"expiry"`
+}
+
+type key struct {
+	Algo string `json:"algo"`
+	Size int    `json:"size"`
+}
+
+type names struct {
+	O  string `json:"O"`
+	OU string `json:"OU"`
+	L  string `json:"L"`
+}
+
 func main() {
 
 	certsDir := "/Users/slokas/godev/src/github.com/upmc-enterprises/gen-certs/certs"
