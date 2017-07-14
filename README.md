@@ -38,3 +38,9 @@ $ keytool -importkeystore -srckeystore certs/node.pkcs12 -srcalias '1' -destkeys
    -storepass "changeit" -srcstoretype pkcs12 \
    -srcstorepass "changeit" -destalias elasticsearch-node
 ```
+
+# Validate 
+
+```
+$ openssl x509 -noout -text -in certs/node.pem    
+```
