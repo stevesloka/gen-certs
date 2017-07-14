@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 
 	"github.com/Sirupsen/logrus"
 )
@@ -46,6 +47,10 @@ func main() {
 
 	certsDir := "/Users/slokas/godev/src/github.com/upmc-enterprises/gen-certs/certs"
 	configDir := "/Users/slokas/godev/src/github.com/upmc-enterprises/gen-certs/config"
+
+	// Clean up first!
+	cleanUp(certsDir)
+	cleanUp(configDir)
 
 	caConfig := caconfig{
 		Signing: configSigning{
@@ -105,14 +110,23 @@ func main() {
 	caConfigJSON, _ := json.Marshal(caConfig)
 	f, err := os.Create(fmt.Sprintf("%s/ca-config.json", configDir))
 	_, err = f.Write(caConfigJSON)
+	if err != nil {
+		logrus.Error(err)
+	}
 
 	reqCSRJSON, _ := json.Marshal(reqCSR)
 	f, err = os.Create(fmt.Sprintf("%s/req-csr.json", configDir))
 	_, err = f.Write(reqCSRJSON)
+	if err != nil {
+		logrus.Error(err)
+	}
 
 	reqCACSRJSON, _ := json.Marshal(caCSR)
 	f, err = os.Create(fmt.Sprintf("%s/ca-csr.json", configDir))
 	_, err = f.Write(reqCACSRJSON)
+	if err != nil {
+		logrus.Error(err)
+	}
 
 	// Generate CA Cert
 	logrus.Info("Starting create CA...")
@@ -161,6 +175,25 @@ func main() {
 	if err != nil {
 		logrus.Error(string(out))
 	}
+}
+
+func cleanUp(dir string) error {
+	d, err := os.Open(dir)
+	if err != nil {
+		return err
+	}
+	defer d.Close()
+	names, err := d.Readdirnames(-1)
+	if err != nil {
+		return err
+	}
+	for _, name := range names {
+		err = os.RemoveAll(filepath.Join(dir, name))
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // https://gist.github.com/dagoof/1477401
